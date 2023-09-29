@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      cat.hasOne(models.vetRecord, {
+         foreignKey: 'catId',
+         as: 'vetRecord'
+      })
     }
   };
   Cat.init({
@@ -22,3 +25,20 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Cat;
 };
+
+
+async function insertCat() {
+  try {
+   await db.cat.create({
+    name: 'Macy',
+    weight: 12.2,
+    age: 4.5
+   });
+   console.log('Record inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting record:', error);
+  } finally {
+    // Close the database connection if needed
+    db.sequelize.close();
+  }
+}
